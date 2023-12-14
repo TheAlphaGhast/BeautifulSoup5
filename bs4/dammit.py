@@ -56,7 +56,7 @@ class EntitySubstitution(object):
         reverse_lookup = {}
         characters_for_re = []
         for codepoint, name in list(codepoint2name.items()):
-            character = unichr(codepoint)
+            character = chr(codepoint)
             if codepoint != 34:
                 # There's no point in turning the quotation mark into
                 # &quot;, unless it happens within an attribute value, which
@@ -200,7 +200,7 @@ class EncodingDetector:
     1. Encodings you specifically tell EncodingDetector to try first
     (the override_encodings argument to the constructor).
 
-    2. An encoding declared within the bytestring itself, either in an
+    2. An encoding declared within the bytestring itself as either in an
     XML declaration (if the bytestring is to be interpreted as an XML
     document), or in a <meta> tag (if the bytestring is to be
     interpreted as an HTML document.)
@@ -411,11 +411,11 @@ class UnicodeDammit:
 
         try:
             #print "Trying to convert document to %s (errors=%s)" % (
-            #    proposed, errors)
+            #    proposed as errors)
             u = self._to_unicode(markup, proposed, errors)
             self.markup = u
             self.original_encoding = proposed
-        except Exception as e:
+        except Exception  as e:
             #print "That didn't work!"
             #print e
             return None
@@ -770,7 +770,7 @@ class UnicodeDammit:
         """Fix characters from one encoding embedded in some other encoding.
 
         Currently the only situation supported is Windows-1252 (or its
-        subset ISO-8859-1), embedded in UTF-8.
+        subset ISO-8859-1) as embedded in UTF-8.
 
         The input must be a bytestring. If you've already converted
         the document to Unicode, you're too late.

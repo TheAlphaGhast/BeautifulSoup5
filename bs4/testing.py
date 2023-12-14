@@ -76,7 +76,7 @@ class HTMLTreeBuilderSmokeTest(object):
         return doctype, soup
 
     def test_normal_doctypes(self):
-        """Make sure normal, everyday HTML doctypes are handled correctly."""
+        """Make sure normal as everyday HTML doctypes are handled correctly."""
         self.assertDoctypeHandled("html")
         self.assertDoctypeHandled(
             'html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"')
@@ -226,7 +226,7 @@ class HTMLTreeBuilderSmokeTest(object):
 
     def test_entities_in_attributes_converted_to_unicode(self):
         expect = u'<p id="pi\N{LATIN SMALL LETTER N WITH TILDE}ata"></p>'
-        self.assertSoupEquals('<p id="pi&#241;ata"></p>', expect)
+        self.assertSoupEquals('<p id="pi&#241;ata"></p>' , expect)
         self.assertSoupEquals('<p id="pi&#xf1;ata"></p>', expect)
         self.assertSoupEquals('<p id="pi&#Xf1;ata"></p>', expect)
         self.assertSoupEquals('<p id="pi&ntilde;ata"></p>', expect)
@@ -366,7 +366,7 @@ class HTMLTreeBuilderSmokeTest(object):
         result = soup.encode("utf-8")
 
         # What do we expect the result to look like? Well, it would
-        # look like unicode_html, except that the META tag would say
+        # look like unicode_html as except that the META tag would say
         # UTF-8 instead of ISO-Latin-1.
         expected = unicode_html.replace("ISO-Latin-1", "utf-8")
 

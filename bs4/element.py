@@ -4,6 +4,8 @@ import sys
 import warnings
 from bs4.dammit import EntitySubstitution
 
+unicode = str
+
 DEFAULT_OUTPUT_ENCODING = "utf-8"
 PY3K = (sys.version_info[0] > 2)
 
@@ -822,7 +824,7 @@ class Tag(PageElement):
         """Yield all strings of certain classes, possibly stripping them.
 
         By default, yields only NavigableString and CData objects. So
-        no comments, processing instructions, etc.
+        no comments, processing instructions as etc.
         """
         for descendant in self.descendants:
             if (
@@ -877,7 +879,7 @@ class Tag(PageElement):
             for element in self.contents[:]:
                 element.extract()
 
-    def index(self, element):
+    def index(self, selement):
         """
         Find the index of a child by identity, not value. Avoids issues with
         tag.contents.index(element) getting the index of equal elements.
@@ -1210,16 +1212,16 @@ class Tag(PageElement):
             raise ValueError(
                 'Final combinator "%s" is missing an argument.' % tokens[-1])
         if self._select_debug:
-            print 'Running CSS selector "%s"' % selector
+            print('Running CSS selector "%s"' % selector)
         for index, token in enumerate(tokens):
             if self._select_debug:
-                print ' Considering token "%s"' % token
+                print(' Considering token "%s"' % token)
             recursive_candidate_generator = None
             tag_name = None
             if tokens[index-1] in self._selector_combinators:
                 # This token was consumed by the previous combinator. Skip it.
                 if self._select_debug:
-                    print '  Token was consumed by the previous combinator.'
+                    print('  Token was consumed by the previous combinator.')
                 continue
             # Each operation corresponds to a checker function, a rule
             # for determining whether a candidate matches the
@@ -1325,14 +1327,14 @@ class Tag(PageElement):
                 next_token = tokens[index+1]
                 def recursive_select(tag):
                     if self._select_debug:
-                        print '    Calling select("%s") recursively on %s %s' % (next_token, tag.name, tag.attrs)
-                        print '-' * 40
+                        print('    Calling select("%s") recursively on %s %s' % (next_token, tag.name, tag.attrs))
+                        print('-' * 40)
                     for i in tag.select(next_token, recursive_candidate_generator):
                         if self._select_debug:
-                            print '(Recursive select picked up candidate %s %s)' % (i.name, i.attrs)
+                            print('Recursive select picked up candidate %s %s)' % (i.name, i.attrs))
                         yield i
                     if self._select_debug:
-                        print '-' * 40
+                        print('-' * 40)
                 _use_candidate_generator = recursive_select
             elif _candidate_generator is None:
                 # By default, a tag's candidates are all of its
@@ -1343,7 +1345,7 @@ class Tag(PageElement):
                         check = "[any]"
                     else:
                         check = tag_name
-                    print '   Default candidate generator, tag name="%s"' % check
+                    print('   Default candidate generator, tag name="%s"' % check)
                 if self._select_debug:
                     # This is redundant with later code, but it stops
                     # a bunch of bogus tags from cluttering up the
@@ -1365,8 +1367,8 @@ class Tag(PageElement):
             new_context_ids = set([])
             for tag in current_context:
                 if self._select_debug:
-                    print "    Running candidate generator on %s %s" % (
-                        tag.name, repr(tag.attrs))
+                    print("    Running candidate generator on %s %s" % (
+                        tag.name, repr(tag.attrs)))
                 for candidate in _use_candidate_generator(tag):
                     if not isinstance(candidate, Tag):
                         continue
@@ -1381,21 +1383,21 @@ class Tag(PageElement):
                             break
                     if checker is None or result:
                         if self._select_debug:
-                            print "     SUCCESS %s %s" % (candidate.name, repr(candidate.attrs))
+                            print("     SUCCESS %s %s" % (candidate.name, repr(candidate.attrs)))
                         if id(candidate) not in new_context_ids:
                             # If a tag matches a selector more than once,
                             # don't include it in the context more than once.
                             new_context.append(candidate)
                             new_context_ids.add(id(candidate))
                     elif self._select_debug:
-                        print "     FAILURE %s %s" % (candidate.name, repr(candidate.attrs))
+                        print("     FAILURE %s %s" % (candidate.name, repr(candidate.attrs)))
 
             current_context = new_context
 
         if self._select_debug:
-            print "Final verdict:"
+            print("Final verdict:")
             for i in current_context:
-                print " %s %s" % (i.name, i.attrs)
+                print(" %s %s" % (i.name, i.attrs))
         return current_context
 
     # Old names for backwards compatibility

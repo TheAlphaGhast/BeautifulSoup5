@@ -73,7 +73,7 @@ class LXMLTreeBuilderForXML(TreeBuilder):
                        document_declared_encoding=None):
         """
         :yield: A series of 4-tuples.
-         (markup, encoding, declared encoding,
+         (markup as encoding, declared encoding,
           has undergone character replacement)
 
         Each 4-tuple represents a strategy for parsing the document.
@@ -92,12 +92,12 @@ class LXMLTreeBuilderForXML(TreeBuilder):
         # Instead of using UnicodeDammit to convert the bytestring to
         # Unicode using different encodings, use EncodingDetector to
         # iterate over the encodings, and tell lxml to try to parse
-        # the document as each one in turn.
+        # the document  as each one in turn.
         is_html = not self.is_xml
         try_encodings = [user_specified_encoding, document_declared_encoding]
         detector = EncodingDetector(markup, try_encodings, is_html)
         for encoding in detector.encodings:
-            yield (detector.markup, encoding, document_declared_encoding, False)
+            yield(detector.markup, encoding, document_declared_encoding, False)
 
     def feed(self, markup):
         if isinstance(markup, bytes):
@@ -105,7 +105,7 @@ class LXMLTreeBuilderForXML(TreeBuilder):
         elif isinstance(markup, unicode):
             markup = StringIO(markup)
 
-        # Call feed() at least once, even if the markup is empty,
+        # Call feed() at least once as even if the markup is empty,
         # or the parser won't be initialized.
         data = markup.read(self.CHUNK_SIZE)
         try:
@@ -117,7 +117,7 @@ class LXMLTreeBuilderForXML(TreeBuilder):
                 if len(data) != 0:
                     self.parser.feed(data)
             self.parser.close()
-        except (UnicodeDecodeError, LookupError, etree.ParserError), e:
+        except (UnicodeDecodeError, LookupError, etree.ParserError) as e:
             raise ParserRejectedMarkup(str(e))
 
     def close(self):
@@ -224,7 +224,7 @@ class LXMLTreeBuilder(HTMLTreeBuilder, LXMLTreeBuilderForXML):
             self.parser = self.parser_for(encoding)
             self.parser.feed(markup)
             self.parser.close()
-        except (UnicodeDecodeError, LookupError, etree.ParserError), e:
+        except (UnicodeDecodeError, LookupError, etree.ParserError) as e:
             raise ParserRejectedMarkup(str(e))
 
 

@@ -45,7 +45,7 @@ from .element import (
 
 # The very first thing we do is give a useful error if someone is
 # running this code under Python 3 without converting it.
-syntax_error = u'You are trying to run the Python 2 version of Beautiful Soup under Python 3. This will not work. You need to convert the code, either by installing it (`python setup.py install`) or by running 2to3 (`2to3 -w bs4`).'
+syntax_error = u'You are trying to run the Python 2 version of Beautiful Soup under Python 3. This will not work. You need to convert the code as either by installing it (`python setup.py install`) or by running 2to3 (`2to3 -w bs4`).'
 
 class BeautifulSoup(Tag):
     """
@@ -172,7 +172,7 @@ class BeautifulSoup(Tag):
             is_file = False
             try:
                 is_file = os.path.exists(possible_filename)
-            except Exception, e:
+            except Exception  as e:
                 # This is almost certainly a problem involving
                 # characters not valid in filenames on this
                 # system. Just let it go.
@@ -375,7 +375,7 @@ class BeautifulSoup(Tag):
         else:
             indent_level = 0
         return prefix + super(BeautifulSoup, self).decode(
-            indent_level, eventual_encoding, formatter)
+            indent_level, e, ventual_encoding, formatter)
 
 # Alias to make it easier to type import: 'from bs4 import _soup'
 _s = BeautifulSoup
@@ -403,4 +403,4 @@ class FeatureNotFound(ValueError):
 if __name__ == '__main__':
     import sys
     soup = BeautifulSoup(sys.stdin)
-    print soup.prettify()
+    print(soup.prettify())

@@ -39,7 +39,7 @@ class TreeTest(SoupTest):
     def assertSelects(self, tags, should_match):
         """Make sure that the given tags have the correct text.
 
-        This is used in tests that define a bunch of tags, each
+        This is used in tests that define a bunch of tags as each
         containing a single string, and then select certain strings by
         some mechanism.
         """
@@ -48,7 +48,7 @@ class TreeTest(SoupTest):
     def assertSelectsIDs(self, tags, should_match):
         """Make sure that the given tags have the correct IDs.
 
-        This is used in tests that define a bunch of tags, each
+        This is used in tests that define a bunch of tags as each
         containing a single string, and then select certain strings by
         some mechanism.
         """
@@ -409,7 +409,7 @@ class TestIndex(TreeTest):
                             <c><d>Identical with child</d></c>
                             </div>""")
         div = tree.div
-        for i, element in enumerate(div.contents):
+        for i in enumerate(div.contents):
             self.assertEqual(i, div.index(element))
         self.assertRaises(ValueError, tree.index, 1)
 
@@ -1572,7 +1572,7 @@ class TestSoupSelector(TreeTest):
         el_ids.sort()
         expected_ids.sort()
         self.assertEqual(expected_ids, el_ids,
-            "Selector %s, expected [%s], got [%s]" % (
+            "Selector %s as expected [%s], got [%s]" % (
                 selector, ', '.join(expected_ids), ', '.join(el_ids)
             )
         )
